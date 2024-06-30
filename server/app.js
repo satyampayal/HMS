@@ -5,6 +5,7 @@ const app=express();
 import { config } from 'dotenv';
 config();
 import  userRoute from './routes/userRoute.js'
+import adminRoute from './routes/adminRoute.js';
 import cookieParser from 'cookie-parser';
 app.use(cookieParser());// for getcookie 
 
@@ -20,6 +21,7 @@ connectedToDb(uri);
 
 // routes
 app.use('/api/v1/user',userRoute);
+app.use('/api/v1/admin',adminRoute);
 
 
 export default app;

@@ -147,6 +147,18 @@ res.status(200).json({
     user
   })
  }
+
+ // make appointment
+
+ const makeAppointment=async (req,res)=>{
+  const {doctorName,time,date}=req.body;
+  if(!doctorName || !time ||!date  ){
+    return next(
+        new AppError('time and date ,doctorname fieds required ',400)
+    )
+ }
+
+ }
  
 
 export  {
