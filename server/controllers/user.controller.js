@@ -98,6 +98,55 @@ res.status(200).json({
   })
 
  }
+
+ const changePassword=async (req,res,next)=>{
+  const {oldPassword,newPassword}=req.body;
+
+  if(!oldPassword || !newPassword ){
+    return next(
+        new AppError('All fieds required ',400)
+    )
+ }
+  const user=await User.findById(req.user.id).select("+password");
+  if(!user){
+    return next(new AppError("User Not exists",400));
+    }
+  const verifyPassword=await user.comparePassword(oldPassword);
+  if(!verifyPassword){
+    return next(new AppError("Password is not correct",400));
+  }
+  user.password=newPassword;
+  await user.save();
+  user.password=undefined;
+  res.status(200).json({
+    success:true,
+    message:'password changed SuccessFuly'
+ })
+
+ }
+
+ const updateProfile=async (req,res)=>{
+  const {fullName,bg,dob}=req.body;
+  const user=await User.findById(req.user.id);
+  if(!user){
+    return next(new AppError("User Not exists",400));
+    }
+  if(fullName!=""){
+    user.fullName=fullName;
+  }
+  if(bg!=""){
+    user.bg=bg;
+  }
+  if(dob!=""){
+    user.dob=dob;
+  }
+  await user.save();
+  res.status(200).json({
+    success:true,
+    message:"user Profile Update",
+    user
+  })
+ }
  
 
 export  {
@@ -105,4 +154,6 @@ export  {
     login,
     logout,
     getProfile,
+    changePassword,
+    updateProfile,
 }

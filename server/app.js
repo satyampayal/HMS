@@ -1,9 +1,12 @@
 import express from 'express';
 import connectedToDb from './config/dbConnection.js';
+
 const app=express();
 import { config } from 'dotenv';
 config();
 import  userRoute from './routes/userRoute.js'
+import cookieParser from 'cookie-parser';
+app.use(cookieParser());// for getcookie 
 
 
 app.use(express.json());// to send in Json fomat in post and get same as jSON
