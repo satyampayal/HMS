@@ -6,6 +6,7 @@ const cookieOptions={
   maxAge:7*24*60*60*1000, // 7 days
   httpOnly:true,
 }
+// Register
   const    register= async (req,res,next)=>{
 
     const {age,fullName,gender,dob,bg,mobileNo,p_id,email,password,avatar}=req.body;
@@ -44,6 +45,7 @@ const cookieOptions={
 
  } 
 
+ // login
  const login=async (req,res,next)=>{
   const {email,password}=req.body;
   if(!email || !password ){
@@ -67,11 +69,40 @@ res.status(200).json({
   message:"Login SuccessFully",
   user
 });
+ }
 
+ const logout=async (req,res,next)=>{
+  res.cookie('token',null,{
+    maxAge:0,
+    secure:true,
+    httpOnly:true
+  });
+  res.status(200).json({
+    success:true,
+    message:'User logged out successfully'
+  });
+ }
+
+ // get Profile
+ const getProfile=async (req,res,next)=>{
+
+  
+  const user=await User.findById(req.user.id);
+  if(!user){
+  return next(new AppError("User Not exists",400));
+  }
+  res.status(200).json({
+    success:true,
+    message:"user Details",
+    user
+  })
 
  }
+ 
 
 export  {
     register,
     login,
+    logout,
+    getProfile,
 }
