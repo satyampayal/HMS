@@ -1,6 +1,11 @@
 
 import User from "../model/user.model.js";
 import AppError from "../utils/AppError.js";
+const cookieOptions={
+  secure:true,
+  maxAge:7*24*60*60*1000, // 7 days
+  httpOnly:true,
+}
   const    register= async (req,res,next)=>{
 
     const {age,fullName,gender,dob,bg,mobileNo,p_id,email,password,avatar}=req.body;
@@ -22,7 +27,8 @@ import AppError from "../utils/AppError.js";
         mobileNo,
         dob,
         gender,
-        bg
+        bg,
+        p_id:(await User.find()).length+1,
       }
     )
     if(!user){
@@ -38,6 +44,34 @@ import AppError from "../utils/AppError.js";
 
  } 
 
+ const login=async (req,res,next)=>{
+  const {email,password}=req.body;
+  if(!email || !password ){
+    return next(new AppError(' email and password Filed are Required',400));
+}
+const user=await User.findOne({email}).select("+password");
+if(!user){
+  return next(new AppError("User Not exists",400));
+}
+
+const verifyPassword=await user.comparePassword(password);
+if(!verifyPassword){
+  return next(new AppError("Passowrd not match ",400));
+}
+const token=await user.generateJwtToken();
+
+res.cookie('token',token,cookieOptions);
+
+user.password=undefined;
+res.status(200).json({
+  message:"Login SuccessFully",
+  user
+});
+
+
+ }
+
 export  {
     register,
+    login,
 }
