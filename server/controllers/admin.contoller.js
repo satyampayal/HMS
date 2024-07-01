@@ -86,11 +86,43 @@ const logout=async (req,res,next)=>{
 
 const addDoctor=async (req,res,next)=>{
     const {fullName,address,house_no,street,city,mobileNo,bg,specilazition,age,gender,dob,experience,email,password}=req.body;
-    
+    if(!fullName || !address || !house_no || !street || !city || !mobileNo || !bg || !specilazition || !age || !gender || !dob || !experience || !email || !password){
+        return next(new AppError(' all   Filed are Required',400));
+    }
+    const doctorExist =await Doctor.findOne({email});
+    if(doctorExist){
+      return next(new AppError('Doctor Exists already',1100));
 
+    }
+    const doctor=await Doctor.create({
+        fullName,
+        address,
+        house_no,
+        street,
+        city,
+        mobileNo,
+        bg,
+        specilazition,
+        age,
+        gender,
+        dob,
+        experience,
+        email,
+        password,
+        d_id:(await Doctor.find()).length+1,
+    });
+
+    await doctor.save();
+    doctor.password=undefined;
+    res.status(200).json({
+        success:true,
+        message:"New Doctor add  ",
+        doctor
+    });
 }
 export {
     register,
     login,
-    logout
+    logout,
+    addDoctor,
 }
