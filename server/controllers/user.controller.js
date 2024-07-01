@@ -1,6 +1,8 @@
 
 import User from "../model/user.model.js";
 import AppError from "../utils/AppError.js";
+import Appointment from "../model/appointment.model.js";
+import Doctor from "../model/doctor.model.js";
 const cookieOptions={
   secure:true,
   maxAge:7*24*60*60*1000, // 7 days
@@ -150,13 +152,33 @@ res.status(200).json({
 
  // make appointment
 
- const makeAppointment=async (req,res)=>{
-  const {doctorName,time,date}=req.body;
-  if(!doctorName || !time ||!date  ){
+ const makeAppointment=async (req,res,next)=>{
+  const {d_id,time,date}=req.body;
+  const p_id=req.user.p_id;
+  if(!d_id || !time ||!date ||!p_id  ){
     return next(
         new AppError('time and date ,doctorname fieds required ',400)
     )
  }
+ const doctorExist=await Doctor.findOne({"d_id":d_id});
+ if(!doctorExist){
+   return next(new AppError('Doctor Not exists ',400));
+
+ }
+ const appointment=await Appointment.create({
+  d_id,
+  time,
+  date,
+  p_id,
+  app_id:(await Appointment.find()).length+1,
+ });
+
+ res.status(200).json({
+  suucess:true,
+  message:"Appointmnet request send ",
+  appointment,
+ });
+
 
  }
  
@@ -168,4 +190,5 @@ export  {
     getProfile,
     changePassword,
     updateProfile,
+    makeAppointment,
 }

@@ -1,5 +1,5 @@
 import express from 'express'
-import {register,login, logout,getProfile,changePassword, updateProfile} from '../controllers/user.controller.js';
+import {register,login, logout,getProfile,changePassword, updateProfile, makeAppointment} from '../controllers/user.controller.js';
 import { isLoggedIn } from '../middleware/auth.middleware.js';
 const route =express.Router();
 
@@ -9,5 +9,6 @@ route.get('/logout',logout);
 route.get('/me',isLoggedIn,getProfile);
 route.post('/change-passowrd',isLoggedIn,changePassword);
 route.post('/update-profile',isLoggedIn,updateProfile);
+route.post('/appointment-request',isLoggedIn,makeAppointment);
 
 export default route;
