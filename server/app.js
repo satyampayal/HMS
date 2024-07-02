@@ -6,6 +6,7 @@ import { config } from 'dotenv';
 config();
 import  userRoute from './routes/userRoute.js'
 import adminRoute from './routes/adminRoute.js';
+import doctorRoute from './routes/doctorRoute.js';
 import cookieParser from 'cookie-parser';
 app.use(cookieParser());// for getcookie 
 
@@ -22,6 +23,7 @@ connectedToDb(uri);
 // routes
 app.use('/api/v1/user',userRoute);
 app.use('/api/v1/admin',adminRoute);
+app.use('/api/v1/doctor',doctorRoute);
 
 
 export default app;

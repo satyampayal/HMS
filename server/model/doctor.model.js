@@ -1,6 +1,8 @@
 import {Schema,model} from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { config } from 'dotenv';
+config();
 const doctorSchema=new Schema({
     fullName:{
         type:String,
@@ -111,7 +113,10 @@ doctorSchema.methods={
         return await bcrypt.compare(plainPassword,this.password);
     },
     generateJwtToken:async function(){
-        return await jwt.sign({id:this._id,d_id:this.d_id,})
+        return await jwt.sign({id:this._id,d_id:this.d_id,}
+            ,process.env.JWT_SECRET,{
+                expiresIn:process.env.JWT_EXPIRE
+        })
 
     }
 }

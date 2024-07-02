@@ -77,7 +77,7 @@ const logout=async (req,res,next)=>{
       });
       res.status(200).json({
         success:true,
-        message:'User logged out successfully'
+        message:'Admin logged out successfully'
       });
 
 }
