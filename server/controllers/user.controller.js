@@ -181,6 +181,22 @@ res.status(200).json({
 
 
  }
+
+ const appointmentCheck=async (req,res,next)=>{
+
+  try{
+  const p_id=req.user.p_id;
+  const appointmentReqList=await  Appointment.find({"p_id":p_id});
+  res.status(200).json({
+    success:true,
+    message:"Appointment request List",
+    appointmentReqList
+  })
+}
+catch(error){
+  return next(new AppError(error,400));
+}
+ }
  
 
 export  {
@@ -191,4 +207,5 @@ export  {
     changePassword,
     updateProfile,
     makeAppointment,
+    appointmentCheck,
 }
