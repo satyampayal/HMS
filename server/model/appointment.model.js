@@ -23,7 +23,7 @@ const appointmentSchema=new Schema({
     },
     status:{
         type:String,
-        enum:["Appointed Success","Appointment cancel","Process"],
+        enum:["Appointment Confirm","Appointment cancel","Process"],
         default:"Process"
     }
 },{
