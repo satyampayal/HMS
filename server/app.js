@@ -25,5 +25,9 @@ app.use('/api/v1/user',userRoute);
 app.use('/api/v1/admin',adminRoute);
 app.use('/api/v1/doctor',doctorRoute);
 
+app.all('*',(req,res)=>{
+    res.status(404).send('OOPS! 404 page not found');
+});
+
 
 export default app;
