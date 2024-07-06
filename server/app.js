@@ -1,6 +1,6 @@
 import express from 'express';
 import connectedToDb from './config/dbConnection.js';
-
+import cors from 'cors';
 const app=express();
 import { config } from 'dotenv';
 config();
@@ -10,7 +10,10 @@ import doctorRoute from './routes/doctorRoute.js';
 import cookieParser from 'cookie-parser';
 app.use(cookieParser());// for getcookie 
 
-
+app.use(cors({
+    origin:'http://localhost:5173/',
+    credentials:true,
+}))
 app.use(express.json());// to send in Json fomat in post and get same as jSON
 app.get('/',(req,res)=>{
     res.send("app listen on "+process.env.PORT);
