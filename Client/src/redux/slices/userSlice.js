@@ -9,7 +9,7 @@ const initialState={
     data: localStorage.getItem('data') || {},
 }
 
-const loginUser=createAsyncThunk('/user/auth/login',async (data)=>{
+export const loginUser=createAsyncThunk('/user/auth/login',async (data)=>{
     try {
         
         const response =axiosInstance.post('/user/login',data);

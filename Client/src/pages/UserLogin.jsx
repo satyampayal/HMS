@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import {Link,useNavigate} from 'react-router-dom'
-import {useDispath} from 'react-redux'
-import {loginUser} from  '..../redux/slices.userSlice'
+import {useDispatch} from 'react-redux'
+import {loginUser} from  '../redux/slices/userSlice'
 function UserLogin() {
-    const dispatch=useDispath();
+    const dispatch=useDispatch();
     const navigate=useNavigate();
     const [loginDetail,setLoginDetail]=useState({
         email:'',
@@ -17,10 +17,10 @@ function UserLogin() {
         [name]: value,
      })
     }
-    const registerHandler=async (e)=>{
+    const loginHandler=async (e)=>{
         e.preventDefault();
 
-        const response =await dispatch(loginUser)
+        const response =await dispatch(loginUser(loginDetail));
         if (response?.payload?.data?.success) {
             navigate('/');
        }
@@ -31,7 +31,7 @@ function UserLogin() {
     }
     return (
         <div className="  m-auto w-[90%]  h-[100vh] flex    items-center  justify-evenly  gap-2 " >
-            <form onSubmit={registerHandler} className=' w-[100%]   flex  flex-col  bg-gradient-to-r from-cyan-500 to-blue-500  text-white   border   rounded-lg ' >
+            <form onSubmit={loginHandler} className=' w-[100%]   flex  flex-col  bg-gradient-to-r from-cyan-500 to-blue-500  text-white   border   rounded-lg ' >
                 <h1 className='text-2xl  text-center   '> Login </h1>
                 <input type="text" 
                 placeholder='email id '
