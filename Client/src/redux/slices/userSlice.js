@@ -9,6 +9,29 @@ const initialState={
     data: localStorage.getItem('data') || {},
 }
 
+
+// register user 
+export const registerUser=createAsyncThunk('/user/auth/register',async (data)=>{
+    try {
+       
+        const response=axiosInstance.post('/user/register',data);
+        toast.promise(response,{
+            loading:"wait for verfication account",
+            success: (data) => {
+                return data?.data?.message;
+              },
+              error: 'Failed to regsiter your account'
+
+        })
+      
+        return await response;
+    } catch (error) {
+    toast.error(error?.response?.data?.message);
+        
+    }
+})
+
+
 export const loginUser=createAsyncThunk('/user/auth/login',async (data)=>{
     try {
         

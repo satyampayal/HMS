@@ -22,7 +22,7 @@ const register = async (req, res, next) => {
     password,
   } = req.body;
 
-  if (!fullName || !email || !password || !age || !dob) {
+  if (!fullName || !email || !password ) {
     return next(new AppError(" All Filed are Required", 400)); // whatever next executation go
   }
   const userExists = await User.findOne({ email });
@@ -102,8 +102,10 @@ const login = async (req, res, next) => {
 
   user.password = undefined;
   res.status(200).json({
+    success:true,
     message: "Login SuccessFully",
     user,
+  
   });
 };
 

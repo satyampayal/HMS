@@ -12,7 +12,7 @@ app.use(cookieParser());// for getcookie
 import morgan from 'morgan';
 
 app.use(cors({
-    origin:'http://localhost:5173/',
+    origin:['http://localhost:5173'],
     credentials:true,
 }))
 app.use(express.json());// to send in Json fomat in post and get same as jSON

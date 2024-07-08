@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import {Link,useNavigate} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import {loginUser} from  '../redux/slices/userSlice'
+import toast from 'react-hot-toast';
 function UserLogin() {
     const dispatch=useDispatch();
     const navigate=useNavigate();
@@ -19,8 +20,12 @@ function UserLogin() {
     }
     const loginHandler=async (e)=>{
         e.preventDefault();
+        if(!loginDetail.email || !loginDetail.password ){
+             toast.error('please enter email and password');
+             return;
+        }
 
-        const response =await dispatch(loginUser(loginDetail));
+        const response =await  dispatch(loginUser(loginDetail));
         if (response?.payload?.data?.success) {
             navigate('/');
        }
@@ -30,8 +35,8 @@ function UserLogin() {
        })
     }
     return (
-        <div className="  m-auto w-[90%]  h-[100vh] flex    items-center  justify-evenly  gap-2 " >
-            <form onSubmit={loginHandler} className=' w-[100%]   flex  flex-col  bg-gradient-to-r from-cyan-500 to-blue-500  text-white   border   rounded-lg ' >
+        <div className="  m-auto w-[100%]  h-[100vh] flex    items-center   justify-evenly  gap-2  bg-gradient-to-r from-cyan-500 to-blue-200 select-none" >
+            <form onSubmit={loginHandler} className='    flex  flex-col    text-white      rounded-lg  w-[50%]' >
                 <h1 className='text-2xl  text-center   '> Login </h1>
                 <input type="text" 
                 placeholder='email id '
@@ -53,8 +58,8 @@ function UserLogin() {
                 <Link to={'/register'} className='text-2xl text-center  m-2 bg-green-500  border border-green-500 rounded-lg ' > Register</Link>
             </form>
 
-            <div className="  w-[100%]   ">
-               <img src="..\src\assets\doctor.png" className='  object-cover ' alt="" />
+            <div className="  bg-transparent  ">
+               <img src="..\src\assets\doctor.png" className='  object-cover  ' alt="" />
             </div>
         </div>
     )
