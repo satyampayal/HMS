@@ -1,0 +1,21 @@
+@media screen  and (max-width:880px) {
+.not_mobile{
+      display: none;
+}
+.anim_menu{
+
+    transition:all ;
+    transition-duration: 1000ms;
+    
+    
+}
+    
+}
+@media screen and (min-width:881px){
+    .mobile{
+           display:none;
+    }
+    .menuBar{
+        display:none;
+    }
+}
