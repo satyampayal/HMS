@@ -21,6 +21,7 @@ const register = async (req, res, next) => {
   if (userExists) {
     return next(new AppError("User Exists already", 1100));
   }
+
   const admin = await Admin.create({
     fullName,
     email,
@@ -32,10 +33,38 @@ const register = async (req, res, next) => {
     gender,
     bg,
     a_id: (await Admin.find()).length + 1,
+    avatar: {
+      public_id: email,
+      secure_url:
+        "https://res.cloudinary.com/du9jzqlpt/image/upload/v1674647316/avatar_drzgxv.jpg",
+    },
   });
-  if (!admin) {
-    return next(new AppError("User not created", 400));
+  if(!admin){
+    return next(new AppError( 'admin not register,please try again',400));
+
   }
+  if(req.file){
+    try {
+      const result =await cloudinary.v2.uploader.upload(req.file.path,{
+        folder:'hms',
+        width:250,
+        height:250,
+        gravity:'faces',
+        crop:'fill'
+      })
+      if(result){
+        admin.avatar.public_id=result.public_id;
+        admin.avatar.secure_url=result.secure_url;
+
+        fs.rm(`uploads/${req.file.filename}`);
+        
+      }
+    } catch (e) {
+      return next(new AppError(e || 'file not upload,please try again',400));
+      
+    }
+  }
+
   await admin.save();
   admin.password = undefined;
   res.status(200).json({
@@ -63,7 +92,7 @@ const login = async (req, res, next) => {
   admin.password = undefined;
   res.status(200).json({
     success: true,
-    message: "Admin Login Successfully ",
+    message: " Admin Login Successfully ",
     admin,
   });
 };
@@ -143,6 +172,10 @@ const addDoctor = async (req, res, next) => {
         "https://res.cloudinary.com/du9jzqlpt/image/upload/v1674647316/avatar_drzgxv.jpg",
     },
   });
+  if(!doctor){
+   return next(new AppError("Doctor not created.try again later", 400));
+    
+  }
   // Image uplaod
   if (req.file) {
     try {
