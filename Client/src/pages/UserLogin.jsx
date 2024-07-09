@@ -35,7 +35,7 @@ function UserLogin() {
        })
     }
     return (
-        <div className="  m-auto w-[100%]  h-[100vh] flex    items-center   justify-evenly  gap-2  bg-gradient-to-r from-cyan-500 to-blue-200 select-none" >
+        <div className="  m-auto w-[100%]  h-[100vh] flex    items-center   justify-evenly  gap-2  bg-gradient-to-r from-blue-300 to-cyan-800 select-none" >
             <form onSubmit={loginHandler} className='    flex  flex-col    text-white      rounded-lg  w-[50%]' >
                 <h1 className='text-2xl  text-center   '> Login </h1>
                 <input type="text" 

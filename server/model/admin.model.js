@@ -15,18 +15,18 @@ const adminSchema = new Schema({
     },
     age: {
         type: Number,
-        required: [true, "Age is required"]
+        // required: [true, "Age is required"]
 
     },
     gender: {
         type: String,
-        reuired: [true, "gender is Required"],
+        // reuired: [true, "gender is Required"],
         enum: ['Male', 'Female', 'other'],
         default: 'Male'
     },
     dob: {
         type: String,
-        reuired: [true, "Date of Birth is required"],
+        // reuired: [true, "Date of Birth is required"],
     },
     // bg-->blood group
     bg: {
