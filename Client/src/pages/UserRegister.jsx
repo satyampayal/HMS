@@ -62,7 +62,6 @@ function UserRegister() {
     formData.append("avatar", registerDetail.avatar);
 
    const response=await  dispatch(registerUser(formData));
-   console.log(response);
    if (response?.payload?.data?.success) {
        
        const responseLogin=await dispatch(loginUser(loginData))

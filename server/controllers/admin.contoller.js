@@ -45,11 +45,11 @@ const register = async (req, res, next) => {
   });
 };
 const login = async (req, res, next) => {
-  const { a_id, password } = req.body;
-  if (!a_id || !password) {
+  const { email, password } = req.body;
+  if (!email || !password) {
     return next(new AppError(" email and password Filed are Required", 400));
   }
-  const admin = await Admin.findOne({ a_id }).select("+password");
+  const admin = await Admin.findOne({ email }).select("+password");
   if (!admin) {
     return next(new AppError("Admin not exist with admin id ", 400));
   }
@@ -63,7 +63,7 @@ const login = async (req, res, next) => {
   admin.password = undefined;
   res.status(200).json({
     success: true,
-    message: "Login Successfully ",
+    message: "Admin Login Successfully ",
     admin,
   });
 };
