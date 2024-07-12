@@ -3,14 +3,42 @@ import { IoMdMenu } from "react-icons/io";
 import { ImCross } from "react-icons/im";
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { logoutAccount } from '../redux/slices/userSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 function Header() {
+  const dispatch= useDispatch();
+  const navigate=useNavigate();
 const [toogle,setToogle]=useState(false);
-const {isLoggedIn,data} =useSelector((state)=>state.auth);
-const userData=JSON.parse(data);
+const [showProfile,setShowProfile]=useState(false);
+const {isLoggedIn} =useSelector((state)=>state.auth);
+let userData=localStorage.getItem('data');
+ userData=JSON.parse(userData);
   const showHideMenuEvent=()=>{
 const menuBar=document.querySelector('.menuBar');
 menuBar.classList.toggle('anim_menu');
  menuBar.classList.toggle('hidden');
+  }
+
+  // showprofileMenu
+  const showprofileMenu=()=>{
+     setShowProfile(!showProfile);
+
+  }
+  //hideProfilemenu
+  const hideProfilemenu=()=>{
+    setShowProfile(!showProfile);
+
+  }
+
+  // Logout handler
+  const logoutHandler= async ()=>{
+    const response= await  dispatch( logoutAccount());
+     console.log(response);
+     if(response?.payload?.data?.success) {
+      navigate('/');
+     }
+
   }
 
   useEffect(()=>{
@@ -38,7 +66,15 @@ menuBar.classList.toggle('anim_menu');
                 </ul>
                 :
                 <div className='w-fit p-[1px] bg-red-500 rounded-full cursor-pointer '>
-                 <img src={userData?.user?.avatar?.secure_url}  className="rounded-full w-12 h-12 " alt="" />
+                 <img onClick={showProfile?showprofileMenu:hideProfilemenu} src={userData?.user?.avatar?.secure_url}  className="rounded-full w-12 h-12 " alt="" />
+                      {  showProfile?<div className='border rounded-lg p-4  absolute top-14 right-2 w-[200px] '>
+                  <h1 className='text-red-500 border-b border-red-300 font-thin text-2xl text-center  overflow-hidden w-auto '> Hi {userData?.user?.fullName}</h1>
+                    <ul className='flex flex-col gap-2 '>
+                      <li>my Profile</li>
+                      <li>my Appointments</li>
+                      <li onClick={logoutHandler}>logout</li>
+                    </ul>
+                 </div>   :<> </>}
                 </div>
                 
               }
@@ -78,6 +114,10 @@ menuBar.classList.toggle('anim_menu');
                 w-[100%] text-white  m-1'>my profile</li>
               </>:
               <>
+                 <ul className='flex justify-evenly gap-4 items-center'> 
+                  <li>   <Link to={'/login'} className='hover:text-red-500  transition-all duration-150 hover:border-b border-red-300 font-thin w-[30px]' >Login</Link></li>
+                  <li>    <Link to={'/register'} className='border rounded-[12px] pl-4 pr-4 pt-1 pb-1 p-1 bg-green-500 text-white  w-[30px] '>Register</Link></li>
+                </ul>
               </>
             }
           </ul>
