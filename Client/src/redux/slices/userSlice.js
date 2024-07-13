@@ -4,7 +4,7 @@ import axiosInstance from "../../config/axiosInst";
 
 const initialState = {
   isLoggedIn: localStorage.getItem("isLoggedIn") || false,
-  // role: localStorage.getItem('role') || '',
+   role: localStorage.getItem('role') || 'USER',
   data: localStorage.getItem("data") || {},
 };
 
@@ -77,8 +77,10 @@ const userSlice = createSlice({
     builder.addCase(loginUser.fulfilled, (state, action) => {
       localStorage.setItem("data", JSON.stringify(action?.payload?.data));
       localStorage.setItem("isLoggedIn", true);
+      localStorage.setItem('role',"USER");
       state.isLoggedIn = localStorage.getItem("isLoggedIn");
       state.data = action?.payload?.data;
+      state.role="USER"
      }),
      builder.addCase(logoutAccount.fulfilled,(state,action)=>{
         localStorage.clear();

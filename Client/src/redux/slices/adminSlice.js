@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 const initialState={
     isLoggedIn: localStorage.getItem('isLoggedIn') || false,
-    // role: localStorage.getItem('role') || '',
+    role: localStorage.getItem('role') || 'ADMIN',
     data: localStorage.getItem('data') || {},
 }
 
@@ -34,10 +34,13 @@ const adminSlice=createSlice({
     reducers:{},
     extraReducers:(builder)=>{
         builder.addCase(adminLogin.fulfilled,(state,action)=>{
+            console.log(action);
          localStorage.setItem('data',JSON.stringify(action?.payload?.data));
          localStorage.setItem('isLoggedIn',true);
+         localStorage.setItem("role",action?.payload?.data?.admin?.role);
          state.data = action?.payload?.data;
          state.isLoggedIn=localStorage.getItem('isLoogedIn');   
+         state.role=action?.payload?.data?.admin?.role;
         })
 
     }

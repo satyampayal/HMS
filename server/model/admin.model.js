@@ -65,7 +65,7 @@ const adminSchema = new Schema({
     },
     role:{
         type:String,
-        enum:["ADMIN","PATIENT"],
+        enum:["ADMIN","USER"],
         default:"ADMIN"
     },
 
